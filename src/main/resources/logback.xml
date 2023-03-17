@@ -1,0 +1,24 @@
+<configuration>
+    <appender name="roll-by-time-and-size" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/logs/kgDice.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/logs/kgDice.%d{yyyy-MM-dd-mm}.%i.log</fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>20</maxHistory>
+            <totalSizeCap>20MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %p %m%n</pattern>
+        </encoder>
+    </appender>
+
+
+    # Override log level for specified package
+    <logger name="dev.kord" level="TRACE">
+        <appender-ref ref="roll-by-time-and-size"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="roll-by-time-and-size"/>
+    </root>
+</configuration>
