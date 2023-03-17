@@ -9,4 +9,4 @@ RUN mkdir /app
 
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/kgDice.jar
 
-ENTRYPOINT ["java", "/app/kgDice.jar"]
+ENTRYPOINT ["java", "-jar", "/app/kgDice.jar"]
