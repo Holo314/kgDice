@@ -1,8 +1,8 @@
 <configuration>
     <appender name="roll-by-time-and-size" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/logs/kgDice.log</file>
+        <file>logs/kgDice.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>/logs/kgDice.%d{yyyy-MM-dd-mm}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/kgDice.%d{yyyy-MM-dd-mm}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>20</maxHistory>
             <totalSizeCap>20MB</totalSizeCap>
