@@ -10,7 +10,7 @@ import kotlinx.coroutines.coroutineScope
 
 suspend fun main() = coroutineScope {
     val kg = Kg(System.getProperty("history", "history.json"))
-    val kord = Kord("ODM2NzE3NTgyMTExMjExNTcy.Gvh_a5.ed_pnRE5nV9IijbmHDkANNDGICvw0zdDThTvH4")
+    val kord = Kord(System.getProperty("token"))
 
     populateKg(kord)
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
