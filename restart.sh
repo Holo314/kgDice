@@ -1,2 +1,2 @@
-source /stop.sh
-source /startup.sh
+./stop.sh
+./startup.sh $1 $2
