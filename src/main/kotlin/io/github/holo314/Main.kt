@@ -9,12 +9,15 @@ import dev.kord.core.behavior.interaction.*
 import kotlinx.coroutines.coroutineScope
 
 suspend fun main() = coroutineScope {
-    val kg = Kg(System.getProperty("history", "history.json"))
+    val kg = Kg(System.getProperty("history", "history.json")
+        .let {
+            if (it.isNullOrBlank()) "history.json" else it
+        })
     val kord = Kord(System.getProperty("token"))
 
     populateKg(kord)
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
-        when(interaction.command.rootName) {
+        when (interaction.command.rootName) {
             "kg" -> kg.kg(interaction)
             "sp" -> kg.sp(interaction)
             "gn" -> kg.gn(interaction)
