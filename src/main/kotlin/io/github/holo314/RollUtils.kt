@@ -104,7 +104,7 @@ fun challenge(request: RollRequest): KgResult {
     val nums = roll(request.diceNumber)
     val tens = nums.count { it == 10 } + masteries.count { it == 10 }
     val oScore = nums.sumOf { worth(difficulty, it) } +
-            (if (request.zoneLevel > 3) tens else 0) +
+            (if (request.zoneLevel >= 3) tens else 0) +
             (if (difficulty <= 10) request.masteryNumber else 0)
 
     val score =
