@@ -39,4 +39,16 @@ data class History(private val history: File, var zoneLevelMapping: HashMap<Stri
 
         save()
     }
+
+    fun setZone(character: String, zoneLevel: Int) {
+        zoneLevelMapping[character] = zoneLevel
+        save()
+    }
+
+    fun getZone(character: String): Int {
+        if (!zoneLevelMapping.contains(character)) {
+            zoneLevelMapping[character] = 0
+        }
+        return zoneLevelMapping[character]!!
+    }
 }

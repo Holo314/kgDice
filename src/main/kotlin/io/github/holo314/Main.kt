@@ -20,15 +20,21 @@ suspend fun main() = coroutineScope {
         }
     val history = History(File(historyLocation))
     val kgV1 = KgV1(history)
+    val kgV2 = KgV2(history)
     val kord = Kord(System.getProperty("token"))
 
     generalPopulate(kord)
-    KgV1.populateKg(kord)
+    KgV1.populate(kord)
+    KgV2.populate(kord)
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
         when (interaction.command.rootName) {
             KgV1.ROLL_COMMAND -> kgV1.roll(interaction)
             KgV1.SPECIFIC_ROLL_COMMAND -> kgV1.specific(interaction)
             KgV1.GENERAL_ROLL_COMMAND -> kgV1.general(interaction)
+            KgV2.ROLL_COMMAND -> kgV2.roll(interaction)
+            KgV2.SPECIFIC_ROLL_COMMAND -> kgV2.specific(interaction)
+            KgV2.GENERAL_ROLL_COMMAND -> kgV2.general(interaction)
+            KgV2.SET_BASE_DIFFICULTY -> kgV2.setBaseDiff(interaction)
             "set" -> history.setLevel(interaction)
             "roll" -> rollCommand(interaction)
             "d" -> rollFormat(interaction)
@@ -76,7 +82,7 @@ suspend fun rollCommand(interaction: GuildChatInputCommandInteraction) {
     val user = interaction.user.mention
 
     val request = RollRequest(dice, difficulty, 0, 0)
-    val (diceResult, _, _, score, _, diff) = challenge(request)
+    val (diceResult, _, _, score, _, diff, _) = challenge(request)
 
     val diceString = "roll: " + diceResult.joinToString(separator = ", ") {
         if (diff > 1 && it == 1)

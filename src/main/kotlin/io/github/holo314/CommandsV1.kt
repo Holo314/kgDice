@@ -5,17 +5,13 @@ import dev.kord.core.behavior.interaction.respondPublic
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.int
 import dev.kord.rest.builder.interaction.string
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.io.File
 
-class KgV1(val history: History) {
+class KgV1(private val history: History) {
     companion object {
-        const val ROLL_COMMAND = "_kg"
-        const val SPECIFIC_ROLL_COMMAND = "_sp"
-        const val GENERAL_ROLL_COMMAND = "_gn"
-        suspend fun populateKg(kord: Kord) {
+        const val ROLL_COMMAND = "v1kg"
+        const val SPECIFIC_ROLL_COMMAND = "v1sp"
+        const val GENERAL_ROLL_COMMAND = "v1gn"
+        suspend fun populate(kord: Kord) {
             kord.createGlobalChatInputCommand(ROLL_COMMAND, "roll dice") {
                 int("dice", "the amount of dice to roll") {
                     required = true
@@ -78,7 +74,7 @@ class KgV1(val history: History) {
             history.zoneLevelMapping[character] = 0
         }
         val zoneLevel = history.zoneLevelMapping[character]!!
-        val (diceResult, masteries, tens, score, newZoneLevel, diff) = kgRoll(dice, difficulty, zoneLevel, skillLevel)
+        val (diceResult, masteries, tens, score, newZoneLevel, diff, _) = V1.kgRoll(dice, difficulty, zoneLevel, skillLevel)
         history.zoneLevelMapping[character] = newZoneLevel
 
         val diceResultString = diceResult.joinToString(separator = ", ") {
