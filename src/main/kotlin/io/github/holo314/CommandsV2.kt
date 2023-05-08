@@ -25,7 +25,7 @@ class KgV2(private val history: History) {
                 }
                 number("av", "the Action Value to use for the Action Points") {
                     required = true
-                    minValue = 1.0
+                    minValue = 0.0
                 }
                 int("difficulty", "the base difficulty of the dice") {
                     required = false
@@ -58,7 +58,7 @@ class KgV2(private val history: History) {
                 }
                 number("av", "the Action Value to use for the Action Points") {
                     required = true
-                    minValue = 1
+                    minValue = 0.0
                 }
                 int("difficulty", "the base difficulty of the dice") {
                     required = false
@@ -90,7 +90,7 @@ class KgV2(private val history: History) {
                 }
                 number("av", "the Action Value to use for the Action Points") {
                     required = true
-                    minValue = 1
+                    minValue = 0.0
                 }
                 int("difficulty", "the base difficulty of the dice") {
                     required = false
