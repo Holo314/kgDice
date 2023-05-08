@@ -4,6 +4,7 @@ import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.respondPublic
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.int
+import dev.kord.rest.builder.interaction.number
 import dev.kord.rest.builder.interaction.string
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -22,9 +23,9 @@ class KgV2(private val history: History) {
                 int("dice", "the stat value of the action") {
                     required = true
                 }
-                int("av", "the Action Value to use for the Action Points") {
+                number("av", "the Action Value to use for the Action Points") {
                     required = true
-                    minValue = 1
+                    minValue = 1.0
                 }
                 int("difficulty", "the base difficulty of the dice") {
                     required = false
@@ -55,7 +56,7 @@ class KgV2(private val history: History) {
                 int("dice", "the stat value of the action") {
                     required = true
                 }
-                int("av", "the Action Value to use for the Action Points") {
+                number("av", "the Action Value to use for the Action Points") {
                     required = true
                     minValue = 1
                 }
@@ -87,7 +88,7 @@ class KgV2(private val history: History) {
                 int("dice", "the stat value of the action") {
                     required = true
                 }
-                int("av", "the Action Value to use for the Action Points") {
+                number("av", "the Action Value to use for the Action Points") {
                     required = true
                     minValue = 1
                 }
@@ -124,7 +125,7 @@ class KgV2(private val history: History) {
             dice: Int,
             difficulty: Int,
             zoneLevel: Int,
-            actionValue: Int,
+            actionValue: Double,
             skillBonus: Double,
             actionBonus: Double,
             actionBonusEffect: String,
@@ -185,7 +186,7 @@ class KgV2(private val history: History) {
 
 
         fun calculateActionPoints(
-            actionValue: Int,
+            actionValue: Double,
             successes: Int,
             skillBonus: Double,
             actionBonus: Double,
@@ -202,7 +203,7 @@ class KgV2(private val history: History) {
         val params = interaction.command
 
         val dice = params.integers["dice"]!!.toInt()
-        val actionValue = params.integers["av"]!!.toInt()
+        val actionValue = params.numbers["av"]!!
         val difficulty = params.integers["difficulty"]?.toInt() ?: 6
         val character = params.strings["character"] ?: interaction.user.mention
         val threshold = params.integers["threshold"]?.toInt() ?: 1
@@ -214,7 +215,7 @@ class KgV2(private val history: History) {
             parseActionBonus(actionBonusDescription)
         } catch (e: Exception) {
             interaction.respondPublic {
-                content = "bonus value is not legal"
+                content = "\"bonus\" value must of the the form `xn` where `x` is one of +,-,* and n is a number"
             }
             return
         }
@@ -260,7 +261,7 @@ class KgV2(private val history: History) {
 
         val level = params.integers["level"]!!.toInt()
         val dice = params.integers["dice"]!!.toInt()
-        val actionValue = params.integers["av"]!!.toInt()
+        val actionValue = params.numbers["av"]!!
         val difficulty = params.integers["difficulty"]?.toInt() ?: 6
         val character = params.strings["character"] ?: interaction.user.mention
         val threshold = params.integers["threshold"]?.toInt() ?: 1
@@ -272,7 +273,7 @@ class KgV2(private val history: History) {
             parseActionBonus(actionBonusDescription)
         } catch (e: Exception) {
             interaction.respondPublic {
-                content = "bonus value is not legal"
+                content = "\"bonus\" value must of the the form `xn` where `x` is one of +,-,* and n is a number"
             }
             return
         }
@@ -335,7 +336,7 @@ class KgV2(private val history: History) {
 
         val level = params.integers["level"]!!.toInt()
         val dice = params.integers["dice"]!!.toInt()
-        val actionValue = params.integers["av"]!!.toInt()
+        val actionValue = params.numbers["av"]!!
         val difficulty = params.integers["difficulty"]?.toInt() ?: 6
         val character = params.strings["character"] ?: interaction.user.mention
         val threshold = params.integers["threshold"]?.toInt() ?: 1
@@ -347,7 +348,7 @@ class KgV2(private val history: History) {
             parseActionBonus(actionBonusDescription)
         } catch (e: Exception) {
             interaction.respondPublic {
-                content = "bonus value is not legal"
+                content = "\"bonus\" value must of the the form `xn` where `x` is one of +,-,* and n is a number"
             }
             return
         }
