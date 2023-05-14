@@ -3,6 +3,7 @@ package io.github.holo314
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.respondPublic
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
+import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
 import dev.kord.rest.builder.interaction.int
 import dev.kord.rest.builder.interaction.number
 import dev.kord.rest.builder.interaction.string
@@ -20,30 +21,7 @@ class KgV2(private val history: History) {
 
         suspend fun populate(kord: Kord) {
             kord.createGlobalChatInputCommand(ROLL_COMMAND, "roll dice") {
-                int("dice", "the stat value of the action") {
-                    required = true
-                }
-                number("av", "the Action Value to use for the Action Points") {
-                    required = true
-                    minValue = 0.0
-                }
-                int("difficulty", "the base difficulty of the dice") {
-                    required = false
-                    minValue = 1
-                }
-                string("character", "the character the roll is for") {
-                    required = false
-                }
-                int("threshold", "the amount of successes needed") {
-                    required = false
-                    minValue = 1
-                }
-                string("description", "the action description") {
-                    required = false
-                }
-                string("bonus", "the action bonus,should be from the form \"+n\", \"-n\", \"*n\" for a number n") {
-                    required = false
-                }
+                addRollParameters()
             }
 
             kord.createGlobalChatInputCommand(SPECIFIC_ROLL_COMMAND, "roll dice for specific skill") {
@@ -53,69 +31,49 @@ class KgV2(private val history: History) {
                         choice("$i", i.toLong())
                     }
                 }
-                int("dice", "the stat value of the action") {
-                    required = true
-                }
-                number("av", "the Action Value to use for the Action Points") {
-                    required = true
-                    minValue = 0.0
-                }
-                int("difficulty", "the base difficulty of the dice") {
-                    required = false
-                    minValue = 1
-                }
-                string("character", "the character the roll is for") {
-                    required = false
-                }
-                int("threshold", "the amount of successes needed") {
-                    required = false
-                    minValue = 1
-                }
-                string("description", "the action description") {
-                    required = false
-                }
-                string("bonus", "the action bonus,should be from the form \"+n\", \"-n\", \"*n\" for a number n") {
-                    required = false
-                }
+                addRollParameters()
             }
-            kord.createGlobalChatInputCommand(GENERAL_ROLL_COMMAND, "roll dice for specific skill") {
+            kord.createGlobalChatInputCommand(GENERAL_ROLL_COMMAND, "roll dice for general skill") {
                 int("level", "the skill level") {
                     required = true
                     for (i in 1..4) {
                         choice("$i", i.toLong())
                     }
                 }
-                int("dice", "the stat value of the action") {
-                    required = true
-                }
-                number("av", "the Action Value to use for the Action Points") {
-                    required = true
-                    minValue = 0.0
-                }
-                int("difficulty", "the base difficulty of the dice") {
-                    required = false
-                    minValue = 1
-                }
-                string("character", "the character the roll is for") {
-                    required = false
-                }
-                int("threshold", "the amount of successes needed") {
-                    required = false
-                    minValue = 1
-                }
-                string("description", "the action description") {
-                    required = false
-                }
-                string("bonus", "the action bonus,should be from the form \"+n\", \"-n\", \"*n\" for a number n") {
-                    required = false
-                }
+                addRollParameters()
             }
             kord.createGlobalChatInputCommand(SET_BASE_DIFFICULTY, "set the base difficulty for general skills") {
                 int("base_diff", "the new value of the base difficulty") {
                     required = true
                 }
             }
+        }
 
+        private fun GlobalChatInputCreateBuilder.addRollParameters() {
+            int("dice", "the stat value of the action") {
+                required = true
+            }
+            number("av", "the Action Value to use for the Action Points") {
+                required = true
+                minValue = 0.0
+            }
+            int("difficulty", "the base difficulty of the dice") {
+                required = false
+                minValue = 1
+            }
+            string("character", "the character the roll is for") {
+                required = false
+            }
+            int("threshold", "the amount of successes needed") {
+                required = false
+                minValue = 1
+            }
+            string("description", "the action description") {
+                required = false
+            }
+            string("bonus", "the action bonus,should be from the form \"+n\", \"-n\", \"*n\" for a number n") {
+                required = false
+            }
         }
 
         fun resultString(

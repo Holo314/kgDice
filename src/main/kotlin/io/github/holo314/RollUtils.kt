@@ -117,22 +117,22 @@ fun challenge(request: RollRequest): KgResult {
     val successes = dice.sumOf { worth(difficulty, it, request.zoneLevel) } +
             masteries.sumOf { worth(difficulty, it, request.zoneLevel) }
     val newZoneLevel = nextZoneLevel(request.zoneLevel, request.threshold, successes, tens)
-    val score = postZoneScore(successes, newZoneLevel)
+    val score = postZoneScore(successes, newZoneLevel, request.zoneLevel)
 
     return KgResult(dice, masteries, tens, score, newZoneLevel, difficulty, request.threshold)
 }
 
-fun postZoneScore(successes: Int, zoneLevel: Int): Int =
-    if (successes < 1 && zoneLevel > 0) {
-        1
-    } else if (zoneLevel > 0) {
+fun postZoneScore(successes: Int, newZone: Int, oldZone: Int): Int =
+    if (newZone < oldZone) {
+        maxOf(successes, 1)
+    } else if (newZone > oldZone) {
         successes + 1
     } else {
         successes
     }
 
 fun nextZoneLevel(currentZone: Int, threshold: Int, score: Int, tens: Int) =
-    if (currentZone == 0 && score >= threshold && tens > 1) {
+    if (currentZone == 0 && score >= maxOf(threshold, 2) && tens > 1) {
         1
     } else if (currentZone in 1..score && score >= threshold) {
         currentZone + 1
