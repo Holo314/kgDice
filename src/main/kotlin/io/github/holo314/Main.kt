@@ -11,6 +11,8 @@ import dev.kord.rest.builder.interaction.int
 import dev.kord.rest.builder.interaction.string
 import kotlinx.coroutines.coroutineScope
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.random.Random
 
 suspend fun main() = coroutineScope {
@@ -21,7 +23,7 @@ suspend fun main() = coroutineScope {
     val history = History(File(historyLocation))
     val kgV1 = KgV1(history)
     val kgV2 = KgV2(history)
-    val kord = Kord(System.getProperty("token"))
+    val kord = Kord(System.getProperty("token") ?: Files.readString(Path.of("token")))
 
     generalPopulate(kord)
     KgV1.populate(kord)
